@@ -1,22 +1,36 @@
-export default function ProductCard() {
+// TODO use next/image for the image
+// TODO use next/link instead of <a> tag
+
+interface ProductCardProps {
+  title: string;
+  description: string;
+  image: string;
+}
+
+export default function ProductCard({
+  title,
+  description,
+  image,
+}: ProductCardProps) {
   return (
     <>
       <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        {/*Takes to the product detail page*/}
         <a href="#">
           <img
             className="rounded-t-lg max-h-72 w-full"
-            src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3"
-            alt=""
+            src={image}
+            alt={title}
           />
         </a>
         <div className="p-5">
           <a href="#">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Product Title
+              {title}
             </h5>
           </a>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            Product Description
+            {description}
           </p>
           <a
             href="#"

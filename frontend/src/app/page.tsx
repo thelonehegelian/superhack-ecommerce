@@ -2,7 +2,7 @@ import ProductCard from "../components/ProductCard";
 
 export default function Home(): JSX.Element {
   return (
-    <div className="">
+    <div className="flex flex-col justify-center p-4">
       <ProductCard
         title="test"
         description="test"

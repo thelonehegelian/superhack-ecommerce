@@ -2,7 +2,7 @@
 // TODO use next/link instead of <a> tag
 
 import Link from "next/link";
-
+import Image from "next/image";
 interface ProductCardProps {
   title: string;
   description: string;
@@ -19,8 +19,10 @@ export default function ProductCard({
       <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         {/*Takes to the product detail page*/}
         <Link href="/item">
-          <img
-            className="rounded-t-lg max-h-72 w-full"
+          <Image
+            className="rounded-t-lg max-h-72"
+            width={500}
+            height={300}
             src={image}
             alt={title}
           />

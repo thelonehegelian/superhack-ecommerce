@@ -10,6 +10,7 @@ const deployMarket: DeployFunction = async function (hre: HardhatRuntimeEnvironm
     args: [],
     log: true,
     autoMine: true,
+    estimatedGasLimit: 2000000,
   });
 };
 

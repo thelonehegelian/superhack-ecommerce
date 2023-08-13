@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useScaffoldContractWrite } from '~~/hooks/scaffold-eth/';
 import { useState } from 'react';
-import { on } from 'events';
 
 interface ProductProps {
   title: string;

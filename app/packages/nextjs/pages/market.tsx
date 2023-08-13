@@ -1,5 +1,8 @@
 import { useState } from "react";
 import Product from "../components/marketplace/Product";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
+
+
 interface Item {
   id: number;
   itemName: string;
@@ -21,6 +24,7 @@ const items: Item[] = [
 console.log(items);
 const Market: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Item>();
+
 
   const handleProductClick = (id: number) => {
     const item = items.filter(item => item.id === id);

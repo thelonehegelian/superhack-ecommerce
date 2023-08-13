@@ -38,7 +38,7 @@ const Product = ({ title, description, imageUrl, itemPrice, onClick, isSelected 
             {/* ... */}
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-3xl font-bold text-gray-900 dark:text-white">$599</span>
+            <span className="text-3xl font-bold text-gray-900 dark:text-white">${itemPrice}</span>
             {isSelected ? (
               <button
                 onClick={handleBid}

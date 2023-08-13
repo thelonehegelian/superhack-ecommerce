@@ -106,10 +106,7 @@ contract Market {
         uint256 amountPayable = _bidPrice * quantity;
         // @note why would anyone want to pay more than the bid price?
         require(msg.value == amountPayable, "Funds must match the bid price");
-        (,int answer,,,) = dataFeed.latestRoundData();
-        uint usdPrice =  _bidPrice / 1 ether * uint(answer);
-        uint usdQuantity =  amountPayable / 1 ether * uint(answer);
-        BuyOrder memory newBuyOrder = BuyOrder(msg.sender, 1, usdPrice, msg.value, usdQuantity, block.timestamp);
+        BuyOrder memory newBuyOrder = BuyOrder(msg.sender, 1, _bidPrice, msg.value, quantity, block.timestamp);
         OrderBook storage orderBook = orderBookInstance;
         orderBook.buyOrders.push(newBuyOrder);
         //@todo decrease maxBuyOrders by 1
@@ -117,9 +114,7 @@ contract Market {
     }
 
     function placeSellOrder(uint256 _askPrice) public {
-        (,int answer,,,) = dataFeed.latestRoundData();
-        uint usdPrice =  _askPrice / 1 ether * uint(answer);
-        SellOrder memory newSellOrder = SellOrder(msg.sender, 1, usdPrice, 1, block.timestamp);
+        SellOrder memory newSellOrder = SellOrder(msg.sender, 1, _askPrice, 1, block.timestamp);
         OrderBook storage orderBook = orderBookInstance;
         orderBook.sellOrders.push(newSellOrder);
         emit SellOrderPlaced(newSellOrder);
@@ -152,9 +147,7 @@ contract Market {
         // @todo handle any remaining funds
         // @todo update the staked amount in the buyOrder so that the actual buyer is not refunded
         address payable seller = payable(_sellOrder.seller);
-        (,int answer,,,) = dataFeed.latestRoundData();
-        uint usdPrice =  _buyOrder.price * _buyOrder.quantity / uint(answer) * 1 ether;
-        seller.transfer(usdPrice);
+        seller.transfer(_buyOrder.price);
         // @todo close the auction
         // @todo refund all other bids
         // @todo reset all the states
@@ -170,22 +163,12 @@ contract Market {
     //////////////////////
 
     // helper functions
-    function getItem(uint256 _id) public view returns (Item memory) {
-        return items[_id];
+    function getMarket(uint256 _id) public view returns (Market memory) {
+        return markets[_id];
     }
 
     function getBuyOrder(uint256 _id) public view returns (BuyOrder memory) {
         OrderBook storage orderBook = orderBookInstance;
         return orderBook.buyOrders[_id];
-    }
-
-    function getSellOrder(uint256 _id) public view returns (SellOrder memory) {
-        OrderBook storage orderBook = orderBookInstance;
-        return orderBook.sellOrders[_id];
-    }
-
-    function getEthUsdRate() public view returns (int) {
-        (,int answer,,,) = dataFeed.latestRoundData();
-        return answer;
     }
 }

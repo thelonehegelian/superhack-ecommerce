@@ -1,12 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { BigNumber } from "ethers";
 import { Market } from "../typechain-types";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { Provider } from "@ethersproject/providers";
 
-describe("Market", function () {
-
+describe("Product", function () {
   let marketContract: Market;
   let owner: SignerWithAddress;
   let user1: SignerWithAddress;
@@ -14,7 +13,7 @@ describe("Market", function () {
   let user3: SignerWithAddress;
   before(async () => {
     [owner, user1, user2, user3] = await ethers.getSigners();
-    const marketContractFactory = await ethers.getContractFactory("Market");
+    const marketContractFactory = await ethers.getContractFactory("Product");
     marketContract = (await marketContractFactory.deploy()) as Market;
     await marketContract.deployed();
   });
@@ -52,10 +51,10 @@ describe("Market", function () {
       expect(order.createdAt).to.lessThanOrEqual(blockTimestamp);
     });
     it("Funds should match a bid price", async function () {
-      let price: BigNumber = ethers.utils.parseEther("1.0");
+      const price: BigNumber = ethers.utils.parseEther("1.0");
       await expect(marketContract.placeBid(price, 1, {value: price}))
         .to.emit(marketContract, "BuyOrderPlaced");
-      let funds: BigNumber = price.mul(BigNumber.from(2));
+        const funds: BigNumber = price.mul(BigNumber.from(2));
       await expect(marketContract.placeBid(price, 2, {value: funds}))
         .to.emit(marketContract, "BuyOrderPlaced");
       await expect(marketContract.placeBid(price, 1, {value: funds}))

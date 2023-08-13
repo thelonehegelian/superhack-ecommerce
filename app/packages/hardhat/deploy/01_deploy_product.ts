@@ -1,11 +1,11 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 
-const deployMarket: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployProduct: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("Market", {
+  await deploy("Product", {
     from: deployer,
     args: [],
     log: true,
@@ -14,6 +14,6 @@ const deployMarket: DeployFunction = async function (hre: HardhatRuntimeEnvironm
   });
 };
 
-export default deployMarket;
+export default deployProduct;
 
-deployMarket.tags = ["Market"];
+deployProduct.tags = ["Product"];

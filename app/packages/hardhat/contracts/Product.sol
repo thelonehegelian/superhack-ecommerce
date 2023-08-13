@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.18;
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
@@ -13,7 +14,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 // Opens a "Market" for a single product to be sold by multiple sellers to multiple buyers
 // Market is the same as a "Product" in the context of the marketplace
-contract Market {
+contract Product {
     /**
      * WORKFLOW
      * 1. A product is added to the marketplace
@@ -45,7 +46,7 @@ contract Market {
         uint256 maxBuyOrders;
     }
 
-    mapping(uint256 => Item) public items;
+    Item public item;
 
     // order book is an array of BuyOrders and SellOrders
     struct OrderBook {
@@ -76,7 +77,6 @@ contract Market {
     event ItemCreated(Item item);
     event BuyOrderPlaced(BuyOrder buyOrder);
     event SellOrderPlaced(SellOrder sellOrder);
-    event AuctionStarted(Market market);
     event AuctionEnded(SellOrder sellOrder);
 
     /**
@@ -84,17 +84,12 @@ contract Market {
      * Aggregator: ETH/USD
      * Address: 0x57241A37733983F97C4Ab06448F244A1E0Ca0ba8
      */
-    constructor() {
+    constructor(uint256 _id, string memory _name, string memory _description, string memory _mainImage) {
         dataFeed = AggregatorV3Interface(
             0x57241A37733983F97C4Ab06448F244A1E0Ca0ba8
         );
-    }
-    // should be called by some admin cf. access control
-    function createMarket(uint256 _id, string memory _name, string memory _description, string memory _mainImage)
-        public
-    {
         Item memory newItem = Item(_id, _name, _description, _mainImage, block.timestamp, 10);
-        items[_id] = newItem;
+        item = newItem;
         emit ItemCreated(newItem);
     }
 
@@ -170,8 +165,8 @@ contract Market {
     //////////////////////
 
     // helper functions
-    function getItem(uint256 _id) public view returns (Item memory) {
-        return items[_id];
+    function getItem() public view returns (Item memory) {
+        return item;
     }
 
     function getBuyOrder(uint256 _id) public view returns (BuyOrder memory) {

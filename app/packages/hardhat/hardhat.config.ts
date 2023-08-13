@@ -94,15 +94,9 @@ const config: HardhatUserConfig = {
   verify: {
     etherscan: {
       apiKey: `${etherscanApiKey}`,
-      // apiKey: process.env.ETHERSCAN_API_KEY,
-      // apiKey: {
-      //   optimisticGoerli: process.env.ETHERSCAN_API_KEY,
-      // },
     },
   },
   etherscan: {
-    // apiKey: `${etherscanApiKey}`,
-    // apiKey: process.env.ETHERSCAN_API_KEY,
     apiKey: {
       optimisticGoerli: process.env.ETHERSCAN_API_KEY!,
     },

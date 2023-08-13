@@ -249,6 +249,7 @@ const Market: React.FC = () => {
         {selectedProduct && (<Product title={selectedProduct.itemName} description={selectedProduct.description} imageUrl={selectedProduct.imageUrl} isSelected={true} />)}
       </div>
       <div className="flex-1  p-4 overflow-scroll">
+        <h1 className=" text-4xl font-bold text-black ">Orderbook</h1>
         {selectedProduct ? <OrderBook orders={selectedProduct.orderBook} /> : ""}
 
       </div>

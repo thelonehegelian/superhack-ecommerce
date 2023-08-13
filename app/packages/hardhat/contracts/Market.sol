@@ -1,5 +1,7 @@
 pragma solidity 0.8.18;
 
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
 /*
  * @todo auction timer
  * @todo staking
@@ -32,8 +34,9 @@ contract Market {
      * 1. A seller stakes a certain amount of tokens to sell a product
      *
      */
+    AggregatorV3Interface internal dataFeed;
 
-    struct Market {
+    struct Item {
         uint256 id;
         string name;
         string description;
@@ -42,7 +45,7 @@ contract Market {
         uint256 maxBuyOrders;
     }
 
-    mapping(uint256 => Market) public markets;
+    mapping(uint256 => Item) public items;
 
     // order book is an array of BuyOrders and SellOrders
     struct OrderBook {
@@ -70,26 +73,30 @@ contract Market {
     OrderBook orderBookInstance;
 
     // Events
-    event MarketCreated(Market market);
+    event ItemCreated(Item item);
     event BuyOrderPlaced(BuyOrder buyOrder);
     event SellOrderPlaced(SellOrder sellOrder);
     event AuctionStarted(Market market);
     event AuctionEnded(SellOrder sellOrder);
 
+    /**
+     * Network: Optimism Goerli
+     * Aggregator: ETH/USD
+     * Address: 0x57241A37733983F97C4Ab06448F244A1E0Ca0ba8
+     */
+    constructor() {
+        dataFeed = AggregatorV3Interface(
+            0x57241A37733983F97C4Ab06448F244A1E0Ca0ba8
+        );
+    }
     // should be called by some admin cf. access control
     function createMarket(uint256 _id, string memory _name, string memory _description, string memory _mainImage)
         public
     {
-        Market memory newMarket = Market(_id, _name, _description, _mainImage, block.timestamp, 10);
-        markets[_id] = newMarket;
-        emit MarketCreated(newMarket);
+        Item memory newItem = Item(_id, _name, _description, _mainImage, block.timestamp, 10);
+        items[_id] = newItem;
+        emit ItemCreated(newItem);
     }
-
-    // price: [{
-    //     address:
-    //     quantity:
-
-    // }]
 
     /**
      * buyers can ask for more than 1 quantity but sellers are limited to 1 quantity until an expiration, this is to avoid monopolies and price manipulation
@@ -99,7 +106,10 @@ contract Market {
         uint256 amountPayable = _bidPrice * quantity;
         // @note why would anyone want to pay more than the bid price?
         require(msg.value == amountPayable, "Funds must match the bid price");
-        BuyOrder memory newBuyOrder = BuyOrder(msg.sender, 1, _bidPrice, msg.value, quantity, block.timestamp);
+        (,int answer,,,) = dataFeed.latestRoundData();
+        uint usdPrice =  _bidPrice / 1 ether * uint(answer);
+        uint usdQuantity =  amountPayable / 1 ether * uint(answer);
+        BuyOrder memory newBuyOrder = BuyOrder(msg.sender, 1, usdPrice, msg.value, usdQuantity, block.timestamp);
         OrderBook storage orderBook = orderBookInstance;
         orderBook.buyOrders.push(newBuyOrder);
         //@todo decrease maxBuyOrders by 1
@@ -107,7 +117,9 @@ contract Market {
     }
 
     function placeSellOrder(uint256 _askPrice) public {
-        SellOrder memory newSellOrder = SellOrder(msg.sender, 1, _askPrice, 1, block.timestamp);
+        (,int answer,,,) = dataFeed.latestRoundData();
+        uint usdPrice =  _askPrice / 1 ether * uint(answer);
+        SellOrder memory newSellOrder = SellOrder(msg.sender, 1, usdPrice, 1, block.timestamp);
         OrderBook storage orderBook = orderBookInstance;
         orderBook.sellOrders.push(newSellOrder);
         emit SellOrderPlaced(newSellOrder);
@@ -140,7 +152,9 @@ contract Market {
         // @todo handle any remaining funds
         // @todo update the staked amount in the buyOrder so that the actual buyer is not refunded
         address payable seller = payable(_sellOrder.seller);
-        seller.transfer(_buyOrder.price);
+        (,int answer,,,) = dataFeed.latestRoundData();
+        uint usdPrice =  _buyOrder.price * _buyOrder.quantity / uint(answer) * 1 ether;
+        seller.transfer(usdPrice);
         // @todo close the auction
         // @todo refund all other bids
         // @todo reset all the states
@@ -156,12 +170,22 @@ contract Market {
     //////////////////////
 
     // helper functions
-    function getMarket(uint256 _id) public view returns (Market memory) {
-        return markets[_id];
+    function getItem(uint256 _id) public view returns (Item memory) {
+        return items[_id];
     }
 
     function getBuyOrder(uint256 _id) public view returns (BuyOrder memory) {
         OrderBook storage orderBook = orderBookInstance;
         return orderBook.buyOrders[_id];
+    }
+
+    function getSellOrder(uint256 _id) public view returns (SellOrder memory) {
+        OrderBook storage orderBook = orderBookInstance;
+        return orderBook.sellOrders[_id];
+    }
+
+    function getEthUsdRate() public view returns (int) {
+        (,int answer,,,) = dataFeed.latestRoundData();
+        return answer;
     }
 }

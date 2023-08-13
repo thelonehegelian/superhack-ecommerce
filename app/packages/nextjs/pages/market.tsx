@@ -42,6 +42,7 @@ const Market: React.FC = () => {
         itemPrice={item.itemPrice}
         isSold={item.isSold}
         onClick={() => handleProductClick(item.id)}
+        isSelected={false}
       />
     ));
   };
@@ -54,7 +55,7 @@ const Market: React.FC = () => {
       </div>
       <div className="flex-1 bg-blue-500 p-4">
         <h1 className="text-4xl font-bold text-white ">Selected Product</h1>
-        {selectedProduct && (<Product title={selectedProduct.itemName} description="" imageUrl={selectedProduct.imageUrl} />)}
+        {selectedProduct && (<Product title={selectedProduct.itemName} description="" imageUrl={selectedProduct.imageUrl} isSelected={true} />)}
       </div>
       <div className="flex-1 bg-green-500 p-4">{/* Content for the third group */}</div>
       <div className="flex-1 bg-yellow-500 p-4">{/* Content for the fourth group */}</div>

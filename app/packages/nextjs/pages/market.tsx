@@ -20,8 +20,7 @@ interface Item {
   orderBook: Order[];
 }
 
-
-const orders: Order[] = [
+const orders1: Order[] = [
   {
     id: 1,
     buyer: "0xAbCdEf0123456789ABCDEF0123456789abcdef01",
@@ -40,6 +39,9 @@ const orders: Order[] = [
     bid: 34.99,
     isAccepted: true,
   },
+];
+
+const orders2: Order[] = [
   {
     id: 4,
     buyer: "0xfedcba0987654321FEDCBA0123456789aBcDef01",
@@ -58,6 +60,9 @@ const orders: Order[] = [
     bid: 29.99,
     isAccepted: true,
   },
+];
+
+const orders3: Order[] = [
   {
     id: 7,
     buyer: "0xFEDCBA9876543210abcdef0123456789aBcDeF01",
@@ -76,13 +81,31 @@ const orders: Order[] = [
     bid: 10.99,
     isAccepted: false,
   },
+];
+
+const orders4: Order[] = [
   {
     id: 10,
     buyer: "0xABCDEF0123456789abcdef0123456789aBcdeF01",
     bid: 50.99,
     isAccepted: true,
   },
+  {
+    id: 11,
+    buyer: "0xAbCdEf0123456789ABCDEF0123456789abcdef01",
+    bid: 25.99,
+    isAccepted: true,
+  },
+  {
+    id: 12,
+    buyer: "0x1234567890abcdefABCDEF0123456789aBcDeF01",
+    bid: 19.99,
+    isAccepted: false,
+  },
 ];
+
+
+
 // NOTE: this data should come from the smart contract
 const items: Item[] = [
   {
@@ -93,7 +116,7 @@ const items: Item[] = [
     isSold: false,
     imageUrl:
       "https://ipfs.io/ipfs/QmT14UeyPZkPXna2UT7ruLy23Aby2vxsA3gjTryc6wF9Nt?filename=DALL%C2%B7E%202023-08-13%2005.16.22%20-%20Postcards%20of%20the%20Hanging%2C%20A%20set%20of%20vintage-style%20postcards%20featuring%20enigmatic%20and%20surreal%20scenes.png",
-    orderBook: orders,
+    orderBook: orders1,
   },
 
   {
@@ -104,7 +127,7 @@ const items: Item[] = [
     isSold: false,
     imageUrl:
       "https://ipfs.io/ipfs/QmPoMjf9vkthucE29rs4nbESFcXLJZYALd69wm36GdrbjD?filename=DALL%C2%B7E%202023-08-13%2005.16.10%20-%20A%20stylish%20pair%20of%20jeans%20with%20back%20pockets%20designed%20in%20tribute%20to%20Bette%20Davis%2C%20combining%20fashion%20and%20classic%20Hollywood%20charm%2C%20vintage%20polaroid.png",
-    orderBook: orders,
+    orderBook: orders2,
   },
   {
     id: 3,
@@ -114,7 +137,7 @@ const items: Item[] = [
     isSold: false,
     imageUrl:
       "https://ipfs.io/ipfs/QmPydVVPQrjgTVsuWDNBcpipWCc94jGWdGiCMTVJghc4b8?filename=DALL%C2%B7E%202023-08-13%2005.29.34%20-%20an%20expensive%20and%20complexly%20designed%20perfume%20bottle%20with%20a%20print%20of%20romeo%20and%20juliet%20.png",
-    orderBook: orders,
+    orderBook: orders3,
   },
   {
     id: 4,
@@ -124,7 +147,7 @@ const items: Item[] = [
     isSold: false,
     imageUrl:
       "https://ipfs.io/ipfs/QmUvZvQcudpqvAYE2teTcNc52tYFDoFWyCQLd4c2XyWiXS?filename=DALL%C2%B7E%202023-08-13%2005.30.02%20-%20A%20beautifully%20illustrated%20tarot%20deck%20that%20unravels%20the%20mysteries%20of%20fortune-telling%2C%20offering%20insights%20into%20the%20hidden%20truths%20of%20life.png",
-    orderBook: orders,
+    orderBook: orders4,
   },
   {
     id: 5,
@@ -134,7 +157,7 @@ const items: Item[] = [
     isSold: false,
     imageUrl:
       "https://ipfs.io/ipfs/QmfFxQqTgYeRjHyVS8toZrgs5YtjBjHSfPF1J4GNcKJ4NQ?filename=DALL%C2%B7E%202023-08-13%2005.16.14%20-%20Intricately%20crafted%20figurines%20depicting%20the%20contrasting%20characters%20of%20Cain%20and%20Abel%2C%20symbolic%20of%20the%20eternal%20struggle%20between%20good%20and%20evil.png",
-    orderBook: orders,
+    orderBook: orders1,
   },
   {
     id: 6,
@@ -144,7 +167,7 @@ const items: Item[] = [
     isSold: false,
     imageUrl:
       "https://ipfs.io/ipfs/QmQ8nUSvMosqpFrQw2cbsBLUVg8r8AEaRTt1P2ZoABppYo?filename=DALL%C2%B7E%202023-08-13%2005.15.58%20-%20Mad%20scientist%20wearing%20a%20Robin%20Hood%20Costume%2C%20playing%20an%20electric%20violin%2C%20expressionist%20painting.png",
-    orderBook: orders,
+    orderBook: orders2,
   },
   {
     id: 7,
@@ -155,7 +178,7 @@ const items: Item[] = [
     isSold: false,
     imageUrl:
       "https://ipfs.io/ipfs/QmXsNVc8rUgzejysTPBfGn5A826g6zC5nyBDmuEmAMLZZ9?filename=DALL%C2%B7E%202023-08-13%2005.27.33%20-%20A%20detailed%20costume%20inspired%20by%20the%20Phantom%20of%20the%20Opera's%20priestly%20image%2C%20perfect%20for%20a%20masquerade%20ball%20or%20Halloween%20event.png",
-    orderBook: orders,
+    orderBook: orders3,
   },
   {
     id: 8,
@@ -164,7 +187,7 @@ const items: Item[] = [
     itemPrice: 24.99,
     isSold: false,
     imageUrl: "https://ipfs.io/ipfs/QmViNasQjqBFmsXx9ojQVoEX1VatLdm25ymVPenxU5D7VR?filename=DALL%C2%B7E%202023-08-13%2005.24.48%20-%20Heart%20Attack%20Machine%20Art%20Print%20A%20thought-provoking%20art%20print%20that%20symbolizes%20the%20mechanized%20pressures%20of%20modern%20life.png",
-    orderBook: orders,
+    orderBook: orders4,
   },
   {
     id: 9,
@@ -175,7 +198,7 @@ const items: Item[] = [
     isSold: false,
     imageUrl:
       "https://ipfs.io/ipfs/Qmefh8mVF2gF29x8MmvVnthneydPauydiKJJ6L1o5vLF23?filename=DALL%C2%B7E%202023-08-13%2005.27.47%20-%20A%20captivating%20canvas%20print%20featuring%20a%20beautiful%20underwater%20scene%20with%20mermaids%2C%20providing%20a%20window%20to%20the%20depths%20of%20the%20sea.png",
-    orderBook: orders,
+    orderBook: orders1,
   },
   {
     id: 10,
@@ -185,7 +208,7 @@ const items: Item[] = [
     isSold: false,
     imageUrl:
       "https://ipfs.io/ipfs/QmQRXnRSUXzGfHLmyuXKDnxoXNBdFLQiSPtz1KFituBNs9?filename=DALL%C2%B7E%202023-08-13%2005.27.39%20-%20A%20decorative%20and%20unique%20broken%20doorknob%20design%2C%20art%20deco%20print.png",
-    orderBook: orders,
+    orderBook: orders2,
   },
 ];
 
@@ -225,7 +248,10 @@ const Market: React.FC = () => {
         <h1 className="text-4xl font-bold text-white ">Selected Product</h1>
         {selectedProduct && (<Product title={selectedProduct.itemName} description={selectedProduct.description} imageUrl={selectedProduct.imageUrl} isSelected={true} />)}
       </div>
-      <div className="flex-1  p-4 overflow-scroll"><OrderBook /></div>
+      <div className="flex-1  p-4 overflow-scroll">
+        {selectedProduct ? <OrderBook orders={selectedProduct.orderBook} /> : ""}
+
+      </div>
       <div className="flex-1 bg-yellow-500 p-4">{/* Content for the fourth group */}</div>
     </div>
   );

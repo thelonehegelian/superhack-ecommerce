@@ -5,70 +5,12 @@ interface Order {
   isAccepted: boolean;
 }
 
-const orders: Order[] = [
-  {
-    id: 1,
-    buyer: "0xAbCdEf0123456789ABCDEF0123456789abcdef01",
-    bid: 25.99,
-    isAccepted: true,
-  },
-  {
-    id: 2,
-    buyer: "0x1234567890abcdefABCDEF0123456789aBcDeF01",
-    bid: 19.99,
-    isAccepted: false,
-  },
-  {
-    id: 3,
-    buyer: "0x9876543210ABCDEFabcdef0123456789aBCDEf01",
-    bid: 34.99,
-    isAccepted: true,
-  },
-  {
-    id: 4,
-    buyer: "0xfedcba0987654321FEDCBA0123456789aBcDef01",
-    bid: 42.99,
-    isAccepted: true,
-  },
-  {
-    id: 5,
-    buyer: "0x0123456789ABCDEFabcdef0123456789aBCDef01",
-    bid: 15.99,
-    isAccepted: false,
-  },
-  {
-    id: 6,
-    buyer: "0xCbA9876543210FEDCBA0123456789abcdef0123",
-    bid: 29.99,
-    isAccepted: true,
-  },
-  {
-    id: 7,
-    buyer: "0xFEDCBA9876543210abcdef0123456789aBcDeF01",
-    bid: 21.99,
-    isAccepted: false,
-  },
-  {
-    id: 8,
-    buyer: "0x4567890aBcDef0123456789ABCDEFabcdef0123",
-    bid: 37.99,
-    isAccepted: true,
-  },
-  {
-    id: 9,
-    buyer: "0x67890aBcDef0123456789ABCDEFabcdef012345",
-    bid: 10.99,
-    isAccepted: false,
-  },
-  {
-    id: 10,
-    buyer: "0xABCDEF0123456789abcdef0123456789aBcdeF01",
-    bid: 50.99,
-    isAccepted: true,
-  },
-];
 
-export default function OrderBook() {
+interface OrderBookProps {
+  orders: Order[];
+}
+
+export default function OrderBook({ orders }: OrderBookProps) {
   return (
     <ul role="list" className="divide-y divide-gray-100">
       {orders.map(order => (

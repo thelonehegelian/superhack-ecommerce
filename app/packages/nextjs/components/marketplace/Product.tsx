@@ -11,7 +11,7 @@ interface ProductProps {
   isSelected: boolean;
 }
 
-const Product = ({ title, description, imageUrl, onClick, isSelected }: ProductProps) => {
+const Product = ({ title, description, imageUrl, itemPrice, onClick, isSelected }: ProductProps) => {
   console.log('isSelected', isSelected);
 
 
@@ -33,7 +33,8 @@ const Product = ({ title, description, imageUrl, onClick, isSelected }: ProductP
         <div className="px-5 pb-5">
           <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{title}</h5>
           <div className="flex items-center mt-2.5 mb-5">
-            {/* Rating SVGs */}
+            <p className='text-white'>{description}</p>
+            {/* TODO add Rating SVGs */}
             {/* ... */}
           </div>
           <div className="flex items-center justify-between">

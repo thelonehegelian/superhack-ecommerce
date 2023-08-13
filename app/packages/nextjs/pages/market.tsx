@@ -2,6 +2,7 @@ import { useState } from "react";
 import Product from "../components/marketplace/Product";
 import OrderBook from "~~/components/marketplace/OrderBook";
 import Link from "next/link";
+import Timer from "~~/components/marketplace/Timer";
 // import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 
@@ -216,9 +217,11 @@ const items: Item[] = [
 console.log(items);
 const Market: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Item>();
-  const [timer, setTimer] = useState(0);
+  const [orderbookStatus, setOrderbookStatus] = useState<boolean>(false);
 
-
+  const handleOrderbookStatus = () => {
+    setOrderbookStatus(!orderbookStatus)
+  }
 
 
   const handleProductClick = (id: number) => {
@@ -260,7 +263,10 @@ const Market: React.FC = () => {
         {selectedProduct ? <OrderBook orders={selectedProduct.orderBook} /> : ""}
 
       </div>
-      <div className="flex-1 bg-yellow-500 p-4">{/* Content for the fourth group */}</div>
+      {
+        selectedProduct && (<div className="flex-1 bg-yellow-500 p-4"><Timer resetTimer={false} /> <h1 className="text-xl">{orderbookStatus ? "BUYERS'S FLOOR" : "SELLER'S FLOOR"}</h1><button onClick={handleOrderbookStatus} className="bg-blue-200 p-2 rounded-xl">Close Orderbook</button></div>)
+      }
+
     </div>
   );
 };

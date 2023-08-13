@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Product from "../components/marketplace/Product";
 import OrderBook from "~~/components/marketplace/OrderBook";
+import Link from "next/link";
 // import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 
@@ -215,6 +216,9 @@ const items: Item[] = [
 console.log(items);
 const Market: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Item>();
+  const [timer, setTimer] = useState(0);
+
+
 
 
   const handleProductClick = (id: number) => {
@@ -241,7 +245,10 @@ const Market: React.FC = () => {
   return (
     <div className="flex h-screen">
       <div className="flex-1 bg-red-500 p-4 overflow-scroll">
-        <h1 className="text-4xl font-bold text-white ">All Products</h1>
+        <div className="flex flex-row m-b-4">
+          <h1 className="text-4xl font-bold text-white p-2">All Products</h1>
+          <Link href="/createproduct"><button className="bg-blue-200 rounded-xl p-2">Create a New Product</button></Link>
+        </div>
         {renderProducts()}
       </div>
       <div className="flex-1 bg-blue-500 p-4">

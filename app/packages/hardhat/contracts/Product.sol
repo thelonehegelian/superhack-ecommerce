@@ -124,7 +124,6 @@ contract Product {
         _matchPrice();
     }
 
-    // @note review this function. On Ethereum mainnet this is gas intensive and a bad idea unless there is a limit to the orderbook size
     // @note setting a limit to the orderbook size is possible in our use case
     // @todo there should be a threshold for the price, exact matches are not always possible
     function _matchPrice() private {

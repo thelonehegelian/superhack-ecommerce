@@ -49,6 +49,11 @@ const contracts = {
             {
               inputs: [
                 {
+                  internalType: "uint256",
+                  name: "_id",
+                  type: "uint256",
+                },
+                {
                   internalType: "string",
                   name: "_productName",
                   type: "string",

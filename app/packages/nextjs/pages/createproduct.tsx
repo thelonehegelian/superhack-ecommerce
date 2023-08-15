@@ -1,9 +1,46 @@
 import { useState } from "react";
+import { useScaffoldContractRead } from "../hooks/scaffold-eth";
+import { useContractRead } from 'wagmi';
+
+// TODO: Get deployed factory contract
+// TODO: write to deployed factory contract
+// TODO: Return to Products page
 
 const CreateProductForm = () => {
+  const { data: products } = useScaffoldContractRead({
+    contractName: "ProductFactory",
+    functionName: "deployedProducts",
+    args: [0n],
+  });
+  console.log(products);
+  const { data: product } = useContractRead({
+    address: products,
+    abi: [
+      {
+        inputs: [],
+        name: "getEthUsdRate",
+        outputs: [
+          {
+            internalType: "int256",
+            name: "",
+            type: "int256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+    ],
+    functionName: "getEthUsdRate",
+
+  });
+
+  console.log("Exchange Rate", product);
+
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [imageLink, setImageLink] = useState('');
+
+
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();

@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Product from "../components/marketplace/Product";
 import OrderBook from "~~/components/marketplace/OrderBook";
 import Link from "next/link";
 import Timer from "~~/components/marketplace/Timer";
-// import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
+import { useContractRead } from 'wagmi';
+import abi from "../generated/deployedContracts"
+
 
 
 interface Order {
@@ -214,10 +217,70 @@ const items: Item[] = [
   },
 ];
 
-console.log(items);
+
+
+// Function to validate imageUrl format
+function validateImageUrl(url) {
+  try {
+    new URL(url); // Use the URL constructor to validate
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 const Market: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Item>();
   const [orderbookStatus, setOrderbookStatus] = useState<boolean>(false);
+  const [allProducts, setAllProducts] = useState<Item[]>(items);
+  const [newProductAddress, setNewProductAddress] = useState("");
+
+  const { data: getAllDeployedProducts } = useScaffoldContractRead({
+    contractName: "ProductFactory",
+    functionName: "getDeployedProducts",
+  });
+
+  useEffect(() => {
+    const allDeployedProducts = getAllDeployedProducts;
+    if (allDeployedProducts) {
+      setNewProductAddress(allDeployedProducts[allDeployedProducts.length - 1]);
+    }
+  });
+
+  const { data: latestProduct } = useContractRead({
+    address: newProductAddress,
+    abi: abi.Product.abi,
+    functionName: "item",
+  })
+
+  useEffect(() => {
+    if (latestProduct) {
+
+      const id = 12131;
+      const itemName = latestProduct[1];
+      const description = latestProduct[2];
+      const imageUrl = latestProduct[3];
+      const isSold = false;
+      const itemPrice = 1;
+      const orderBook = [] as Order[]; // Create an empty array of type Order
+
+      const validatedImageUrl = validateImageUrl(imageUrl) ? imageUrl : "https://ipfs.io/ipfs/QmR6fU15pQ3hL2GuhtmLbiPQngzMauwPuQxzYcvhboy5Du?filename=DALL%C2%B7E%202023-08-15%2004.31.55%20-%20Chief%20Wiggum%20from%20simpsons%20with%20a%20telescope%20in%20a%20dali%20painting.png";
+
+      // Update the state using the updater function
+      setAllProducts(prevProducts => [
+        ...prevProducts,
+        {
+          id: id,
+          itemName: itemName,
+          description: description,
+          itemPrice: itemPrice,
+          isSold: isSold,
+          imageUrl: validatedImageUrl,
+          orderBook: orderBook,
+        },
+      ]);
+    }
+  }, [latestProduct]);
 
   const handleOrderbookStatus = () => {
     setOrderbookStatus(!orderbookStatus)
@@ -227,11 +290,10 @@ const Market: React.FC = () => {
   const handleProductClick = (id: number) => {
     const item = items.filter(item => item.id === id);
     setSelectedProduct(item[0]);
-    console.log(selectedProduct);
   };
 
   const renderProducts = () => {
-    return items.map(item => (
+    return allProducts.map(item => (
       <Product
         key={item.id}
         title={item.itemName}

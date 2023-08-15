@@ -256,7 +256,7 @@ const Market: React.FC = () => {
   useEffect(() => {
     if (latestProduct) {
 
-      const id = 12131;
+      const id = allProducts.length + 1;
       const itemName = latestProduct[1];
       const description = latestProduct[2];
       const imageUrl = latestProduct[3];
@@ -288,7 +288,9 @@ const Market: React.FC = () => {
 
 
   const handleProductClick = (id: number) => {
-    const item = items.filter(item => item.id === id);
+    console.log("Product clicked: ", id);
+    const item = allProducts.filter(item => item.id === id);
+    console.log("Selected product: ", item[0]);
     setSelectedProduct(item[0]);
   };
 
@@ -330,7 +332,6 @@ const Market: React.FC = () => {
       {
         selectedProduct && (<div className="flex-1 bg-yellow-500 p-4"><Timer resetTimer={false} /> <h1 className="text-xl">{orderbookStatus ? "BUYERS'S FLOOR" : "SELLER'S FLOOR"}</h1><button onClick={handleOrderbookStatus} className="bg-blue-200 p-2 rounded-xl">Close Orderbook</button></div>)
       }
-
     </div>
   );
 };

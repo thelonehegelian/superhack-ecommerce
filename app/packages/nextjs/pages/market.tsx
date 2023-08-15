@@ -293,7 +293,9 @@ const Market: React.FC = () => {
   };
 
   const renderProducts = () => {
-    return allProducts.map(item => (
+    const reversedProducts = [...allProducts].reverse();
+
+    return reversedProducts.map(item => (
       <Product
         key={item.id}
         title={item.itemName}

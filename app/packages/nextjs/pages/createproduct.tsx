@@ -1,50 +1,53 @@
-import { useState } from "react";
-import { useScaffoldContractRead } from "../hooks/scaffold-eth";
-import { useContractRead } from 'wagmi';
+import { useState, useEffect } from "react";
+import { useScaffoldContractWrite } from "../hooks/scaffold-eth";
+import { useRouter } from 'next/router';
 
-// TODO: Get deployed factory contract
-// TODO: write to deployed factory contract
-// TODO: Return to Products page
 
+
+function generateRandomBigInt(min: bigint, max: bigint): bigint {
+  const range = max - min + 1n;
+  const randomOffset = BigInt(Math.floor(Math.random() * Number(range)));
+  return min + randomOffset;
+}
+
+// interface Product {
+//   name: string;
+//   description: string;
+//   imageLink: string;
+// }
 const CreateProductForm = () => {
-  const { data: products } = useScaffoldContractRead({
+  const router = useRouter();
+  // const [product, setProduct] = useState<Product>();
+  // @note using sucky solution for now
+  // @note bad solution, mistake in contract
+  const [productName, setProductName] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [imageLink, setImageLink] = useState("");
+
+  const [randomNumber, setRandomNumber] = useState<bigint>(); // Initial value doesn't matter
+
+  useEffect(() => {
+    // Generate a new random integer whenever the component loads
+    const min = 1n;
+    const max = 100n;
+    const newRandomNumber = generateRandomBigInt(min, max);
+    setRandomNumber(newRandomNumber);
+  }, []);
+
+  const { writeAsync: createProduct, isLoading } = useScaffoldContractWrite({
     contractName: "ProductFactory",
-    functionName: "deployedProducts",
-    args: [0n],
-  });
-  console.log(products);
-  const { data: product } = useContractRead({
-    address: products,
-    abi: [
-      {
-        inputs: [],
-        name: "getEthUsdRate",
-        outputs: [
-          {
-            internalType: "int256",
-            name: "",
-            type: "int256"
-          }
-        ],
-        stateMutability: "view",
-        type: "function"
-      },
-    ],
-    functionName: "getEthUsdRate",
-
+    functionName: "createProduct",
+    args: [randomNumber, productName, productDescription, imageLink],
   });
 
-  console.log("Exchange Rate", product);
-
-  const [productName, setProductName] = useState('');
-  const [productDescription, setProductDescription] = useState('');
-  const [imageLink, setImageLink] = useState('');
-
-
-
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
+    console.log("Creating Product");
     event.preventDefault();
-    // Handle form submission logic here
+    createProduct();
+    if (!isLoading) {
+      console.log("Product Created");
+      router.push('/market'); // Navigate to /market
+    }
   };
 
   return (
@@ -91,6 +94,7 @@ const CreateProductForm = () => {
         />
       </div>
       <button
+        onClick={handleSubmit}
         type="submit"
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >

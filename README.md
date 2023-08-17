@@ -1,4 +1,4 @@
-# Project Description
+# BuyerBazaar
 Decentralized ecommerce platform. Buyers set prices, transparent order book system eliminates SEO tricks. Efficient price matching, real-time updates. Native token facilitates transactions and rewards good behavior.
 
 It is meant to be a combination of Web2 and Web3. We are only interested in finding parts of the Web that participants would want to be transparent. Not eveything needs to be anonymous or fully decentralised.
